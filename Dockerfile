@@ -1,15 +1,19 @@
 FROM ubuntu:focal
 
-# install convenient programs
-RUN apt-get install vi nano
-# install nessessary programs
-RUN apt-get install python3
+# Add crontab file in the cron directory
+ADD backups-cron /etc/cron.d/backups-cron
 
-COPY . .
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/backups-cron
 
-# creating cron jobs
-RUN /bin/bash install.sh
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
 
-# running example program that generates some files to backup
-RUN python3 main.py
+# install cron and convenient programs
+RUN apt-get update && apt-get -y install cron vim
 
+# add all the cronjobs to the crontab
+RUN crontab /etc/cron.d/backups-cron
+
+# execute cronjobs
+RUN cron && tail -f /var/log/cron.log
