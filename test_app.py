@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import asyncio
-import sys
 import os
-from datetime import datetime
 import random
-from pathlib import Path
+import sys
 import tarfile
-
+from datetime import datetime
+from pathlib import Path
 
 SMALL_GEN_TIME_INTEVAL = 10
 LARGE_GEN_TIME_INTEVAL = 5 * 60
@@ -89,7 +88,7 @@ async def generate_large(dst_path: str):
         tar = tarfile.open(dst_path / dirname, "w")
         dirno += 1
 
-        for i in range(random.randint(1,8)):
+        for i in range(random.randint(1, 8)):
             filename = dst_path / f"file{i}"
             create_random_file(filename)
             os.chmod(filename, 0o777)
@@ -101,7 +100,7 @@ async def generate_large(dst_path: str):
         await asyncio.sleep(LARGE_GEN_TIME_INTEVAL)
 
 
-async def main(dst:str):
+async def main(dst: str):
     print(f"STARTING CREATING RANDOM FILES ({datetime.now()})")
     await asyncio.gather(generate_small(dst), generate_large(dst))
 
