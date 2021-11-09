@@ -12,9 +12,10 @@ various bash scripts for:
 - **creating backups**:
   - backup-scripts/inc-backup.sh
   - backup-scripts/weekly-backup.sh
-  - backup-scripts/inc-backup.sh
 - **deleting old backups**:
   - backup-scripts/delete-old-backups.sh
+- **restoring state from backups**:
+  - backup-scripts/restore.sh
 
 ---
 
@@ -22,19 +23,25 @@ various bash scripts for:
 
 1. Clone the git repository
 ```bash
-git  clone https://github.com/michalwilk123/project-ask
+git clone https://github.com/michalwilk123/project-ask
 ```
+
 2. Build the docker image (while in the _project-ask_ directory!)
 ```bash
 docker build --tag ask-inf .
 ```
-3. Run the docker image
 
-You can also test out all the scripts by running bash shell inside the docker
-container (quick reminder: docker container is a **RUNNING** docker image,
-so it is nessesary to perform the operation no. **3** for this operation to
-be successful)
-
+3. Run the docker image and open bash shell 
 ```bash
-docker run ask-inf:latest
+docker run -it ask-inf:latest
+```
+
+4. Install some things (unnecessary)
+```bash
+./install.sh
+```
+
+5. Run the demo app showcasing the utilites of the script
+```bash
+python3 test_app.py app_data
 ```
