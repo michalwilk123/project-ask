@@ -1,7 +1,5 @@
 * * * * * echo "$(date): Cron is alive" >> /var/log/cron.log
-* * * * * /app/generators/generate-files-small.sh 2> &1
-*/5 * * * * /app/generators/generate-files-large.sh 2> &1
-0 1 * * * /app/backup-scripts/inc-backup.sh 2> &1
+0 1 * * * /app/backup-scripts/inc_backup.py 2> &1
 0 0 * * 0 /app/backup-scripts/weekly-backup.sh 2> &1
 0 0 1 * * /app/backup-scripts/delete-old-backups.sh 2> &1
 # empty line. Do not try to delete me because otherwise i will crash the crontab :)
