@@ -32,7 +32,7 @@ docker run -it ask-inf:latest
 ./install.sh
 ```
 
-5. Run the demo app showcasing the utilites of the script
+5. Run the demo app showcasing the utilities of the script
 ```bash
 python3 test_app.py /app/app_data
 ```
@@ -54,7 +54,7 @@ python3 test_app.py /app/app_data
 /app/ask_backup.sh install /app/app_data /app/backups /var/log/ask_backup.log
 ```
 Initiates the script. Prepares the git repository that tracks the changes in the data directory. 
-Command aldo sets up the cronjob with opinionated dates when the backups should be performed.
+Command also sets up the cronjob with opinionated dates when the backups should be performed.
 
 **Default log location:** _/var/log/ask_backup.log_
 
@@ -86,7 +86,7 @@ with date in the filename.
 Deletes all older backups from certain date.
 
 #### 5) restore _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
-Restore the state of the data folder. Can choose couple of diffrent snapshots (incremental).
+Restore the state of the data folder. Can choose couple of different snapshots (incremental).
 Cannot restore the incremental snapshots of older full backups.
 
 
