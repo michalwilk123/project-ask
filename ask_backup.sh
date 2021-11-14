@@ -61,6 +61,7 @@ save_metadata(){
     chmod +x $PERM_FILE
 }
 
+
 incremental_backup(){
     save_metadata
     local message="Created incremental backup $(date)"
@@ -75,7 +76,14 @@ incremental_backup(){
     echo $message >> $LOG_PATH
 }
 
+
 weekly_backup(){
+    tar -zcf "$DST_PATH/$(date "+%Y-%m-%d")-weekly.tar.gz" $SRC_PATH > /dev/null
+    rm -rf $DST_PATH/inc.git
+    setup_git_repo >> $LOG_PATH
+}
+
+restore_weekly(){
     return
 }
 
@@ -118,6 +126,19 @@ rest(){
     fi
 }
 
+delete_old_backups(){
+    local ddate=$(date +%s --date="-30 days")
+
+    for d in $(ls $SRC_PATH | grep -P ".*[0-9]{4}-[0-1][0-9]-[0-3][0-9].*\.tar\.gz")
+    do
+        my_date=$(echo $d |grep -Eo '[[:digit:]]{4}-[[:digit:]]{2}-[[:digit:]]{2}')
+        dsec=$(date +%s --date=${my_date})
+        if [ $dsec -lt $ddate ]; then
+            echo "Deleting old backup ($(data)): $d"
+            rm -r "$d"
+        fi
+    done
+}
 
 case $APP_OPTION in
     install)
@@ -128,13 +149,15 @@ case $APP_OPTION in
         incremental_backup
         ;;
     weekly | week)
-        echo "week-backup"
+        weekly_backup
         ;;
     delete | del)
-        echo "deleting"
+        delete_old_backups
         ;;
     restore | rst)
         rest
+        ;;
+    brestore)
         ;;
     *)
         show_commands
