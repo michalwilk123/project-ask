@@ -1,25 +1,16 @@
 # Project - Computer System Administration
-Project assignment from University. Creating various backups in Linux OS
 
----
-
+Project assignment from University. Creating various backups in Linux OS.
 The project consists of the docker image running Ubuntu 20 LTS Focal and
-various bash scripts for:
-
-- **generating test files**:
-  - generators/generate-files-large.sh
-  - generators/generate-files-small.sh
-- **creating backups**:
-  - backup-scripts/inc-backup.sh
-  - backup-scripts/weekly-backup.sh
-- **deleting old backups**:
-  - backup-scripts/delete-old-backups.sh
-- **restoring state from backups**:
-  - backup-scripts/restore.sh
+a bash script capable of:
+- creating full backups
+- creating incremental backups
+- restoring the data
+- keeping track of old data and automatically deleting it
 
 ---
 
-### How to run project
+## How to run project
 
 1. Clone the git repository
 ```bash
@@ -46,17 +37,18 @@ docker run -it ask-inf:latest
 python3 test_app.py /app/app_data
 ```
 
+---
 
-### How to use the script
+## How to use the script
 
-#### Available options:
-    * **install** - installs the backup script (also automatically sets up the cron job)
-    * **incremental | inc** - create incremental backup
-    * **weekly** - create weekly backup of whole data
-    * **restore | rst** - restore the data to the previous state
-    * **del | delete** - deletes the files too old to be tracked (deletes only full backups)
+### Available options:
+* **install** - installs the backup script (also automatically sets up the cron job)
+* **incremental | inc** - create incremental backup
+* **weekly** - create weekly backup of whole data
+* **restore | rst** - restore the data to the previous state
+* **del | delete** - deletes the files too old to be tracked (deletes only full backups)
 
-##### 1) install _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_ _LOG_FILE_DIRECTORY[optional]_
+#### 1) install _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_ _LOG_FILE_DIRECTORY[optional]_
 
 ``` bash
 /app/ask_backup.sh install /app/app_data /app/backups /var/log/ask_backup.log
@@ -66,7 +58,7 @@ Command aldo sets up the cronjob with opinionated dates when the backups should 
 
 **Default log location:** _/var/log/ask_backup.log_
 
-##### 2) inc _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
+#### 2) inc _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
 
 ``` bash
 /app/ask_backup.sh inc /app/app_data/ /app/backups/
@@ -79,21 +71,21 @@ Git cannot handle permissions and ownership data of the files. We solved this pr
 generating the script which takes care of all this precious metadata. This script is also tracked so we can see 
 what metadata existed in history.
 
-##### 3) weekly _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
+#### 3) weekly _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
 ``` bash
 /app/ask_backup.sh weekly /app/app_data/ /app/backups/
 ```
 Creates full backup of the data folder. The files are merged into a tarball and gzipped into singular file
 with date in the filename.
 
-##### 4) delete _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
+#### 4) delete _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
 ``` bash
 /app/ask_backup.sh delete /app/app_data/ /app/backups/
 ```
 
 Deletes all older backups from certain date.
 
-##### 5) restore _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
+#### 5) restore _PATH_TO_DIRECTORY_WITH_DATA_ _PATH_TO_DIRECTORY_WITH_BACKUPS_
 Restore the state of the data folder. Can choose couple of diffrent snapshots (incremental).
 Cannot restore the incremental snapshots of older full backups.
 
