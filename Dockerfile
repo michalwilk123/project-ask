@@ -1,31 +1,23 @@
 FROM ubuntu:focal
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN mkdir /code
 WORKDIR /app
-
-# Add crontab file in the cron directory
-ADD backups-cron /etc/cron.d/backups-cron
-
-# Give execution rights on the cron job
-RUN chmod 0644 /etc/cron.d/backups-cron
 
 # Create the log file to see if the crontab is alive
 RUN touch /var/log/cron.log
 
 # install cron and other convenient programs
 RUN apt-get update && apt-get -y install cron vim python3 git
-
-# add all the cronjobs to the crontab
-RUN crontab /etc/cron.d/backups-cron
+# RUN apt-get -y install git-annex # git extension for storing blobs
 
 COPY . /app/
-RUN chmod +x generators/* backup-scripts/*
+RUN rm -rf .git
 
 # set destination of data files
-ENV DATA_FOLDER=/app/app_data
-RUN git init $DATA_FOLDER
-
-# display messages that the cron is alive
-# RUN tail -f /var/log/cron.log &
+RUN mkdir -p /app/backups
+RUN chmod +x ask_backup.sh test_app.py && \
+    ./ask_backup.sh install /app/app_data /app/backups /var/log/ask_backup.log
+RUN chmod +x aa.sh
 
 CMD cron && /bin/bash

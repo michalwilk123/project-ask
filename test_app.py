@@ -108,6 +108,7 @@ async def main(dst: str):
 if __name__ == "__main__":
     dst = sys.argv[1]
 
+    assert len(dst) > 1, "Target path not provided!"
     assert os.path.exists(
         dst
     ), f"Cannot write to a directory {dst} because it does not exist!"
